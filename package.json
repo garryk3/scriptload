@@ -1,0 +1,10 @@
+{
+    "name": "lib-ui__scriptload",
+    "version": "0.0.1",
+    "description": "lib-ui scriptload",
+    "main": "./index.js",
+    "dependencies": {},
+    "scripts": {}
+}
+
+
