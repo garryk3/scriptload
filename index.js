@@ -1,53 +1,36 @@
-function ScriptLoad(path)  {
+const scriptAdder = (attributes) => {
+    const $script = document.createElement('script');
 
-    const fragment = document.createDocumentFragment();
-    let scriptPath = null;
-
-    const scriptAdd = (scriptPath) => {
-        let scriptItem = document.createElement('script');
-        scriptItem.src = scriptPath;
-
-        fragment.appendChild(scriptItem);
-
-        return new Promise( (resolve, reject) => {
-            scriptItem.onload = () => {
-                resolve(scriptItem);
-            };
-
-            scriptItem.onerror = ()=> {
-                console.log('error in load', scriptPath);
-                reject(new Error());
-                document.body.removeChild(scriptItem);
-            };
-
-        }).catch((error) => {
-            console.error(error);
-            throw error;
-        })
-    };
-
-    if ( typeof path === 'string' ) {
-            scriptPath = path;
-            scriptAdd(scriptPath);
+    for (let item in attributes) {
+        if(attributes.hasOwnProperty(item)) {
+            $script[item] = attributes[item];
         }
-
-    else if ( Array.isArray(path) ) {
-            path.map( function (item) {
-                scriptPath = item;
-                scriptAdd(scriptPath);
-            } );
-
-        }
-
-    else {
-        console.log("Неправильный формат данных! Требуется строка или массив, получено: ", typeof path, path)
     }
 
-    document.body.appendChild(fragment);
+    $script.onerror = ()=> {
+        console.log(`error to load script: ${$script.src}`);
+        document.head.removeChild($script);
+    };
 
-    return path;
+    return $script
+};
+
+const ScriptLoad = (attributes) =>  {
+    const fragment = document.createDocumentFragment();
+
+    if(Array.isArray(attributes)) {
+        attributes.forEach((attribute) => {
+            fragment.appendChild(scriptAdder(attribute))
+        })
+    } else if (typeof attributes === 'object') {
+        fragment.appendChild(scriptAdder(attributes))
+    } else {
+        console.log("Неправильный формат данных! Требуется объект с атрибутами скрипта или массив массив объектов, получено: ", typeof attributes)
+    }
+
+    document.head.appendChild(fragment);
 }
 
-export {ScriptLoad as default};
+export { ScriptLoad as default };
 
 
