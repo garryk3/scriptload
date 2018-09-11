@@ -22,6 +22,6 @@ const scripts = [
     }
 ]
 
-**scriptload(scripts)
+**scriptload(scripts)**
 
 
