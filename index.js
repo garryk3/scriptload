@@ -3,14 +3,18 @@ const scriptAdder = (attributes) => {
 
     for (let item in attributes) {
         if(attributes.hasOwnProperty(item)) {
-            $script[item] = attributes[item];
+            if(item !== 'onerror') {
+                $script[item] = attributes[item];
+            }
+
+            $script.onerror = () => {
+                console.log(`error to load script: ${$script.src}`);
+                document.head.removeChild($script);
+
+                attributes.onerror && attributes.onerror();
+            };
         }
     }
-
-    $script.onerror = ()=> {
-        console.log(`error to load script: ${$script.src}`);
-        document.head.removeChild($script);
-    };
 
     return $script
 };
@@ -25,7 +29,7 @@ const ScriptLoad = (attributes) =>  {
     } else if (typeof attributes === 'object') {
         fragment.appendChild(scriptAdder(attributes))
     } else {
-        console.log("Неправильный формат данных! Требуется объект с атрибутами скрипта или массив массив объектов, получено: ", typeof attributes)
+        console.log("Неправильный формат данных! Требуется объект с атрибутами скрипта или массив объектов, получено: ", typeof attributes)
     }
 
     document.head.appendChild(fragment);
