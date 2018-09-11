@@ -1,11 +1,9 @@
 ## Использование
 
-_import scriptLoad from 'scriptload'_
-
-**ScriptLoad(array[{}] || {});**
+**scriptload(array[{}] || {});**
 
 ## Example
-import scriptload from '~/scriptload'
+_import scriptload from '~/scriptload'
 
 
 const scripts = [
@@ -24,6 +22,6 @@ const scripts = [
     }
 ]
 
-scriptload(scripts)
+**scriptload(scripts)
 
 
